@@ -10,9 +10,9 @@ tcp.connect(dest)
 print 'Para sair use CTRL+X\n'
 
 msg = raw_input()
-print(binascii.crc32(b(msg)))
 
 while msg <> '\x18':
-    tcp.send (msg)
-    msg = raw_input()
+	print(' '.join(format(ord(x), 'b') for x in msg))
+	tcp.send (msg)
+	msg = raw_input()
 tcp.close()
