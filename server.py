@@ -1,7 +1,7 @@
 import socket
 
 HOST = ''              # Endereco IP do Servidor
-PORT = 5000            # Porta que o Servidor esta
+PORT = 5050            # Porta que o Servidor esta
 tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 orig = (HOST, PORT)
 tcp.bind(orig)
@@ -11,8 +11,11 @@ while True:
     con, cliente = tcp.accept()
     print 'Concetado por', cliente
     while True:
-        msg = con.recv(1024)
-        if not msg: break
+        coded = con.recv(1024)
+        msg = ''
+        for x in coded.split(' '):
+            msg += str(unichr(int(x, 2)))
+        if not coded: break
         print cliente, msg
     print 'Finalizando conexao do cliente', cliente
     con.close()
