@@ -1,18 +1,32 @@
 import socket
 import binascii
+import matplotlib.pyplot as plt
 
 HOST = '127.0.0.1'     # Endereco IP do Servidor
-PORT = 5050            # Porta que o Servidor esta
+PORT = 5001            # Porta que o Servidor esta
 tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 dest = (HOST, PORT)
 tcp.connect(dest)
 
-print 'Para sair use CTRL+X\n'
+print('Para sair use -1\n')
 
-msg = raw_input()
+msg = input()
 
-while msg <> '\x18':
-	coded = ' '.join(format(ord(x), 'b') for x in msg)
-	tcp.send (coded)
-	msg = raw_input()
+signal = []
+while msg != '-1':
+	binary = ''.join(format(ord(x), 'b') for x in msg)
+	
+	tmp = list(binary)
+	coded = []
+	for x in tmp:
+		coded.append(x)
+		coded.append(x)
+
+	plt.plot(vet)
+	plt.title("NRZ-RZ")
+	plt.show()
+
+	tcp.send(binary)
+	msg = input()
+
 tcp.close()
