@@ -2,7 +2,7 @@ import socket
 import pdb
 
 HOST = ''              # Endereco IP do Servidor
-PORT = 5000            # Porta que o Servidor esta
+PORT = 5012            # Porta que o Servidor esta
 tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 orig = (HOST, PORT)
 tcp.bind(orig)
@@ -22,11 +22,29 @@ def decodeMsg(coded):
     return binary
 
 def bin2Msg(binary):
-    bin_chars = binary.split(', ', 7)
-    msg = ''
-    pdb.set_trace()
-    for x in bin_chars: msg += unichr(int(x, 2)) 
-    return msg
+	sliced = ''
+	aux = 0
+	
+	binary = binary.replace(' ', '')
+	for i in range(len(binary)):
+		sliced += str(binary[i])
+		aux+=1
+		
+		if (aux % 7 == 0):
+			sliced += ','
+
+	print(sliced)
+	bin_chars = sliced.split(',')
+	print(bin_chars)
+
+	# Transformar binario do bin_chars para letras
+
+	#pdb.set_trace()
+	msg = ''
+	for x in bin_chars: 
+		print(x)
+		msg += chr(int(x)) 
+	return msg
 
 def main():
     print("Servidor Iniciado!")
@@ -36,7 +54,9 @@ def main():
 
         while True:
             coded = con.recv(1024)
+            #print(coded)
             decoded = decodeMsg(coded)
+            #print(decoded)
             msg = bin2Msg(decoded)
             if not coded: break
             print(cliente, msg)

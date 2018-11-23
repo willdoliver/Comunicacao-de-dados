@@ -4,7 +4,7 @@ import pdb
 # import matplotlib.pyplot as plt
 
 HOST = '127.0.0.1'     # Endereco IP do Servidor
-PORT = 5000            # Porta que o Servidor esta
+PORT = 5012            # Porta que o Servidor esta
 tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 dest = (HOST, PORT)
 tcp.connect(dest)
@@ -36,8 +36,11 @@ def main():
 
 	while msg != '\x18':
 		binary = ''.join(format(ord(x), 'b') for x in msg)
+		print(binary)
 
 		coded = NRZ(binary) if nrz else RZ(binary)
+		coded = ''.join(coded)
+		print(coded)
 
 		# plt.plot(vet)
 		# plt.title("NRZ")
