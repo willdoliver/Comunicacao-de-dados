@@ -1,8 +1,10 @@
 import socket
 import pdb
+import binascii
+import matplotlib.pyplot as plt
 
-HOST = ''              # Endereco IP do Servidor
-PORT = 5012            # Porta que o Servidor esta
+HOST = ''
+PORT = 5029
 tcp = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 orig = (HOST, PORT)
 tcp.bind(orig)
@@ -14,7 +16,7 @@ def decodeMsg(coded):
 
     for i, x in enumerate(coded):
         if i % 2 != 0:
-            binary += x 
+            binary += x
             if i < len(coded) - 1:
                 binary += ' '
         else: continue
@@ -22,29 +24,35 @@ def decodeMsg(coded):
     return binary
 
 def bin2Msg(binary):
-	sliced = ''
-	aux = 0
+    sliced = ''
+    aux = 0
 	
-	binary = binary.replace(' ', '')
-	for i in range(len(binary)):
-		sliced += str(binary[i])
-		aux+=1
+    binary = binary.replace(' ', '')
+    for i in range(len(binary)):
+        sliced += str(binary[i])
+        aux+=1
 		
-		if (aux % 7 == 0):
-			sliced += ','
+        if (aux % 7 == 0):
+            sliced += ','
 
-	print(sliced)
-	bin_chars = sliced.split(',')
-	print(bin_chars)
+    #print(sliced)
+    bin_chars = sliced.split(',')
+    #print(bin_chars)
 
-	# Transformar binario do bin_chars para letras
+    #pdb.set_trace()
+    msg = ''
+    for x in bin_chars: 
+        try:
+            msg += chr(int(x, 2))
+        except:
+            pass
+    return msg
 
-	#pdb.set_trace()
-	msg = ''
-	for x in bin_chars: 
-		print(x)
-		msg += chr(int(x)) 
-	return msg
+def createGraph(title, nums):
+    plt.plot(nums)
+    plt.title(title)
+    plt.show()
+
 
 def main():
     print("Servidor Iniciado!")
@@ -53,13 +61,24 @@ def main():
         print('Concetado por', cliente)
 
         while True:
+            # Grafico do coded
             coded = con.recv(1024)
-            #print(coded)
+            print('Mensagem codificada: ',coded)
+            vetCoded = list(coded)
             decoded = decodeMsg(coded)
             #print(decoded)
+            # Grafico do binaryT
+            binaryT = decoded.replace(' ', '')
+            vetBinaryT = list(binaryT)
+            print('Mensagem em binario: ', binaryT)
+            # Printar MSG
             msg = bin2Msg(decoded)
+            print('Texto da mensagem: ', msg)
             if not coded: break
             print(cliente, msg)
+
+            createGraph('binario codificado - server', vetCoded)
+            createGraph('binario - server', vetBinaryT)
 
         print('Finalizando conexao do cliente', cliente)
         con.close()
