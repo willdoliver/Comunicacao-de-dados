@@ -64,7 +64,7 @@ def main():
 		
 		msg = raw_input("Digite a mensagem desejada: ")
 		
-		binary = ''.join(format(ord(x), 'b') for x in msg)
+		binary = ''.join(format(ord(x), '08b') for x in msg)
 		print('Mensagem em binario: ', str(binary))
 		
 		vetBinary = list(binary)
