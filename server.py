@@ -21,18 +21,19 @@ def decodeMsg(coded):
                 binary += ' '
         else: continue
     
+    binary = binary.replace(' ', '')
+
     return binary
 
 def bin2Msg(binary):
     sliced = ''
     aux = 0
 	
-    binary = binary.replace(' ', '')
     for i in range(len(binary)):
         sliced += str(binary[i])
         aux+=1
 		
-        if (aux % 7 == 0):
+        if (aux % 8 == 0):
             sliced += ','
 
     #print(sliced)
